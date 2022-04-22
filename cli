@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+var {GeoJSONToGeoPackage} = require('./built/index');
+var path = require('path');
+
+console.log('GeoJSON to GeoPackage Converter');
+
+var geoJsonFile = path.resolve(process.cwd(), process.argv[2]);
+var geoPackageFile = path.resolve(process.cwd(), process.argv[3]);
+
+console.log('Converting %s to %s', geoJsonFile, geoPackageFile);
+new GeoJSONToGeoPackage().convert({ geoJson: geoJsonFile, geoPackage: geoPackageFile }).then(() => {
+  console.log('File conversion complete');
+  console.log('Converted %s to %s', geoJsonFile, geoPackageFile);
+});
