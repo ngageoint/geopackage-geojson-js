@@ -20,14 +20,10 @@ $ npm install @ngageoint/geopackage-geojson-js
 
 #### Javascript
 ```javascript
-const { GeoPackageAPI, setCanvasKitWasmLocateFile } = require('@ngageoint/geopackage');
-const GeoJSONToGeoPackage = require('@ngageoint/geopackage-geojson-js');
-
-const geoJSONFile = '/path/to/file/to/convert.gpkg';
-const geoPackageFile = '/path/to/file/to/create.gpkg';
+const { GeoJSONToGeoPackage } = require('@ngageoint/geopackage-geojson-js');
+const geoJSONFile = './test.json';
+const geoPackageFile = './test.gpkg';
 const tableName = 'features';
-
-setCanvasKitWasmLocateFile(file => path.join(__dirname, 'node_modules', '@ngageoint', 'geopackage', 'dist', 'canvaskit', file));
 
 // Convert GeoJSON to GeoPackage feature table
 const converter = new GeoJSONToGeoPackage();

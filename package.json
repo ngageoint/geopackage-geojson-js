@@ -1,6 +1,6 @@
 {
   "name": "@ngageoint/geopackage-geojson-js",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "description": "GeoJSON to GeoPackage converter",
   "keywords": [
     "NGA",
@@ -63,8 +63,8 @@
   "scripts": {
     "test": "npm run clean-built && nyc mocha -r ts-node/register",
     "report": "nyc report",
-    "tsc": "rm -rf ./built && tsc",
-    "prepare": "rm -rf ./built && tsc",
+    "tsc": "rm -rf ./built && tsc; cp ./node_modules/@ngageoint/geopackage/dist/canvaskit/canvaskit.wasm built/canvaskit.wasm",
+    "prepare": "rm -rf ./built && npm run tsc",
     "clean-built": "rm -rf ./built",
     "clean": "rm -rf ./.test_run; rm -rf ./.nyc_output; rm -rf ./docs/coverage"
   }

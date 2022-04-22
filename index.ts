@@ -14,7 +14,7 @@ import bbox from '@turf/bbox';
 
 if (typeof window === 'undefined') {
   setCanvasKitWasmLocateFile(file => {
-    return path.join(__dirname, 'node_modules', '@ngageoint', 'geopackage', 'dist', 'canvaskit', file);
+    return path.join(__dirname, file);
   });
 }
 

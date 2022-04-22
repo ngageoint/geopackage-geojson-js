@@ -1,8 +1,11 @@
 var GeoJSONToGeoPackage = require('../index').GeoJSONToGeoPackage;
+var {setCanvasKitWasmLocateFile} = require('@ngageoint/geopackage');
 
 var path = require('path')
   , fs = require('fs')
   , should = require('chai').should();
+
+setCanvasKitWasmLocateFile(file => path.join(__dirname, '..', 'node_modules', '@ngageoint', 'geopackage', 'dist', 'canvaskit', file));
 
 describe('GeoJSON to GeoPackage tests', function() {
 
