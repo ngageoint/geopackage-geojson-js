@@ -12,7 +12,8 @@
     "url": "https://www.nga.mil"
   },
   "contributors": [
-    "Daniel Barela <daniel.barela@gmail.com>"
+    "Daniel Barela <daniel.barela@gmail.com>",
+    "Christopher Caldwell <c.caldwell90@gmail.com>"
   ],
   "homepage": "http://ngageoint.github.io/geopackage-geojson-js/",
   "repository": {
