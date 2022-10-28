@@ -41,6 +41,7 @@
     "ts-loader": "6.2.1",
     "ts-node": "^8.5.2",
     "typescript": "^3.7.2",
+    "typedoc": "^0.15.4",
     "nyc": "14.1.1",
     "prettier": "^1.19.1",
     "source-map-support": "0.5.16"
@@ -62,11 +63,14 @@
     "lib"
   ],
   "scripts": {
+    "gh-pages-build": "npm install && npm run typedoc --options typedoc.json",
+    "typedoc": "rm -rf ./api-docs; typedoc --tsconfig tsconfig.json --mode file --out docs/api index.ts",
     "test": "npm run clean-built && nyc mocha -r ts-node/register",
     "report": "nyc report",
     "tsc": "rm -rf ./built && tsc; cp ./node_modules/@ngageoint/geopackage/dist/canvaskit/canvaskit.wasm built/canvaskit.wasm",
     "prepublishOnly": "rm -rf ./built && npm run tsc",
+    "build": "npm run clean && webpack && tsc",
     "clean-built": "rm -rf ./built",
-    "clean": "rm -rf ./.test_run; rm -rf ./.nyc_output; rm -rf ./docs/coverage"
+    "clean": "rm -rf ./.test_run; rm -rf ./.nyc_output; rm -rf ./docs/coverage; rm -rf docs/api"
   }
 }
