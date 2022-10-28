@@ -3,5 +3,6 @@ node_modules
 built
 package-lock.json
 .test_run
-docs
+docs/api
+docs/coverage
 test/fixtures/tmp
