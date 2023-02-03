@@ -50,6 +50,8 @@ Software source code previously released under an open source license and then m
 
 ### Changelog
 
+##### 5.0.0
+- Update to GeoPackage JS 5.0.0
 
 ##### 4.1.0
 - Update to GeoPackage JS 4.1.0.

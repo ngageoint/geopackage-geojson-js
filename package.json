@@ -1,6 +1,6 @@
 {
   "name": "@ngageoint/geopackage-geojson-js",
-  "version": "4.1.3",
+  "version": "5.0.0",
   "description": "GeoJSON to GeoPackage converter",
   "keywords": [
     "NGA",
@@ -25,7 +25,9 @@
   },
   "bin": "./cli",
   "dependencies": {
-    "@ngageoint/geopackage": "4.1.0",
+    "@ngageoint/geopackage": "5.0.0-beta",
+    "@ngageoint/simple-features-geojson-js": "^1.1.1",
+    "@ngageoint/simple-features-js": "^1.1.1",
     "@turf/bbox": "^4.3.0",
     "JSONStream": "^1.3.3"
   },
@@ -64,7 +66,7 @@
   ],
   "scripts": {
     "gh-pages-build": "npm install && npm run typedoc --options typedoc.json",
-    "typedoc": "rm -rf ./api-docs; typedoc --tsconfig tsconfig.json --mode file --out docs/api index.ts",
+    "typedoc": "rm -rf ./docs/api; typedoc --tsconfig tsconfig.json --mode file --out docs/api index.ts",
     "test": "npm run clean-built && nyc mocha -r ts-node/register",
     "report": "nyc report",
     "tsc": "rm -rf ./built && tsc; cp ./node_modules/@ngageoint/geopackage/dist/canvaskit/canvaskit.wasm built/canvaskit.wasm",

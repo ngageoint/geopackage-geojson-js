@@ -117,7 +117,7 @@ describe('GeoJSON to GeoPackage tests', function() {
         "type":"Feature",
         "id": 2,
         "properties":{
-          "geometry":101,
+          "geometry": 101,
           "date": date,
           "bool": true,
           "undefined": undefined,
@@ -130,25 +130,26 @@ describe('GeoJSON to GeoPackage tests', function() {
       }
     ]};
     const converter = new GeoJSONToGeoPackage({geoJson});
-
-      converter.convert()
-      .then(function(geopackage) {
-        var tables = geopackage.getFeatureTables();
-        tables.length.should.be.equal(1);
-        tables[0].should.be.equal('features');
-        var featureDao = geopackage.getFeatureDao('features');
-        var count = featureDao.getCount();
-        count.should.be.equal(1);
-        const features = featureDao.queryForAll();
-        features[0]._feature_id.should.be.equal(2);
-        features[0].geometry_property.should.be.equal(101);
-        features[0].bool.should.be.equal(1);
-        features[0].date.should.be.equal(date.toISOString())
-        should.not.exist(features[0].object);
-      })
-      .then(function() {
-        done();
-      });
+    converter.convert()
+    .then(function(geopackage) {
+      var tables = geopackage.getFeatureTables();
+      tables.length.should.be.equal(1);
+      tables[0].should.be.equal('features');
+      var featureDao = geopackage.getFeatureDao(tables[0]);
+      var count = featureDao.getCount();
+      count.should.be.equal(1);
+      const features = featureDao.queryForAll();
+      const row = features.next().value;
+      features.close();
+      row.getValue('_feature_id').should.be.equal('2');
+      row.getValue('geometry_property').should.be.equal(101);
+      row.getValue('bool').should.be.equal(true);
+      row.getValue('date').should.be.equal(date.toISOString())
+      row.getValue('object').should.be.equal(JSON.stringify({ a: 1}));
+    })
+    .then(function() {
+      done();
+    });
   })
 
   it('should convert the natural earth 110m file and add the layer twice', function() {
@@ -334,30 +335,30 @@ describe('GeoJSON to GeoPackage tests', function() {
       var featureDao = geopackage.getFeatureDao('zandm');
       var count = featureDao.getCount();
       count.should.be.equal(2);
-      var iterable = featureDao.queryForEach('_feature_id', 'asdf#456');
+      var iterable = featureDao.queryForEqWithFieldAndValue('_feature_id', 'asdf#456');
       for (var row of iterable) {
-        row = featureDao.getRow(row);
-        var geom = row.geometry;
-        geom.geometry.z.should.be.equal(121.0);
-        geom.geometry.x.should.be.equal(-5.78);
-        geom.geometry.y.should.be.equal(4.3);
-        should.not.exist(geom.geometry.m);
-        row.getValueWithColumnName('_properties_ID').should.be.equal(456);
-        row.getValueWithColumnName('_feature_id').should.be.equal('asdf#456');
+        var geom = row.getGeometry();
+        geom.getGeometry().z.should.be.equal(121.0);
+        geom.getGeometry().x.should.be.equal(-5.78);
+        geom.getGeometry().y.should.be.equal(4.3);
+        should.not.exist(geom.getGeometry().m);
+        row.getValue('_properties_ID').should.be.equal(456);
+        row.getValue('_feature_id').should.be.equal('asdf#456');
       }
+      iterable.close();
 
-      iterable = featureDao.queryForEach('_feature_id', 'gserg#897');
+      iterable = featureDao.queryForEqWithFieldAndValue('_feature_id', 'gserg#897');
       for (var row of iterable) {
-        row = featureDao.getRow(row);
-        var geom = row.geometry;
-        geom.geometry.points[0].z.should.be.equal(7.7);
-        geom.geometry.points[0].x.should.be.equal(-8.6);
-        geom.geometry.points[0].y.should.be.equal(2.86);
+        var geom = row.getGeometry();
+        geom.getGeometry().points[0].z.should.be.equal(7.7);
+        geom.getGeometry().points[0].x.should.be.equal(-8.6);
+        geom.getGeometry().points[0].y.should.be.equal(2.86);
         // https://tools.ietf.org/html/rfc7946 m values should not be used
         // geom.geometry.points[0].m.should.be.equal(131);
-        row.getValueWithColumnName('_properties_ID').should.be.equal(897);
-        row.getValueWithColumnName('_feature_id').should.be.equal('gserg#897');
+        row.getValue('_properties_ID').should.be.equal(897);
+        row.getValue('_feature_id').should.be.equal('gserg#897');
       }
+      iterable.close();
 
       return converter.extract(geopackage, 'zandm')
       .then(function(geoJson) {
@@ -387,7 +388,6 @@ describe('GeoJSON to GeoPackage tests', function() {
       fs.unlinkSync(path.join(__dirname, 'fixtures', 'tmp', 'nullGeometry.gpkg'));
     } catch (e) {}
     const converter = new GeoJSONToGeoPackage();
-    // console.log(path.join(__dirname, 'fixtures', 'nullGeometry.json'));
     return converter.convert({geoJson: path.join(__dirname, 'fixtures', 'nullGeometry.geojson'), geoPackage: path.join(__dirname, 'fixtures', 'tmp', 'nullGeometry.gpkg')},(t) => console.log(t))
     .then(function(geopackage) {
       should.exist(geopackage);
